@@ -58,28 +58,14 @@ Use --bracket-spacing=false option for prettier")
     ;; give up
     (error "Couldn't find a prettier-eslint executable")))
 
-;; TODO account for options
-(defun prettier-eslint/options ()
-  (let ((options '()))
-    (when prettier-eslint/single-quote
-      (push "--single-quote" options))
-    (when prettier-eslint/trailing-comma
-      (push "--trailing-comma" options))
-    (when prettier-eslint/no-bracket-spacing
-      (push "--bracket-spacing=false" options))
-    options
-    ))
-
 (defun prettier-eslint ()
   "Format the current file with ESLint."
   (interactive)
-  (let ((options (prettier-eslint/options)))
-        (progn (call-process
-                (prettier-eslint/binary)
-                nil "*Prettier-ESLint Errors*" nil
-                buffer-file-name "--write" "--single-quote"
-                "--trailing-comma" "--bracket-spacing=false")
-               (revert-buffer t t t))))
+  (progn (call-process
+          (prettier-eslint/binary)
+          nil "*Prettier-ESLint Errors*" nil
+          buffer-file-name "--write" )
+         (revert-buffer t t t)))
 
 
 (provide 'prettier-eslint)
